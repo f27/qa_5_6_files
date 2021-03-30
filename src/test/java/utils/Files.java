@@ -223,7 +223,6 @@ public class Files {
                     }
                     sb.append("\n");
                 }
-                sb.append("\nNew sheet ----");
             }
             myExcelBook.close();
         } catch (IOException e) {
