@@ -2,6 +2,7 @@ package tests.tests;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import net.lingala.zip4j.exception.ZipException;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 import tests.pages.RepoWithFilesPage;
@@ -9,11 +10,13 @@ import tests.pages.RepoWithFilesPage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.UUID;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static utils.Files.*;
+import static utils.Zip.unzip;
 
 public class FileTests extends TestBase {
     String
@@ -24,6 +27,8 @@ public class FileTests extends TestBase {
             xlsFileName = "1.xls",
             xlsxFileName = "1.xlsx",
             pdfFileName = "1.pdf",
+            zipFileName = "zipped.zip",
+            zipFilePassword = "123",
             expectedDataForTxtFile = "Just text file",
             expectedDataForDocFile = "This is .doc file",
             expectedDataForDocxFile = "This is .docx file",
@@ -31,7 +36,8 @@ public class FileTests extends TestBase {
             expectedDataForCellB4XlsFile = "This is B4 cell",
             expectedDataForXlsxFile = "This is .xlsx file",
             expectedDataForCellB4XlsxFile = "This is B4 cell",
-            expectedDataForPdfFile = "This repository is empty";
+            expectedDataForPdfFile = "This repository is empty",
+            expectedDataForFileInZip = "This is txt file in zip archive with password";
 
     @Test
     void txtFileTest() throws FileNotFoundException {
@@ -101,5 +107,14 @@ public class FileTests extends TestBase {
 
         assertThat(pdf, PDF.containsText(expectedDataForPdfFile));
 
+    }
+
+    @Test
+    void zipFileTest() throws FileNotFoundException, ZipException {
+        String uuid = UUID.randomUUID().toString();
+        File zipFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(zipFileName).downloadFile();
+        unzip(zipFile.getAbsolutePath(),"build/unzipped/"+ uuid, zipFilePassword);
+
+        assertThat(readTextFromFilePath("build/unzipped/"+uuid+"/zipped.txt")).contains(expectedDataForFileInZip);
     }
 }

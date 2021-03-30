@@ -29,6 +29,10 @@ public class Files {
         return fileContent;
     }
 
+    public static String readTextFromFilePath(String path) {
+        return readTextFromFile(getFile(path));
+    }
+
     public static File getFile(String path) {
         return new File(path);
     }
