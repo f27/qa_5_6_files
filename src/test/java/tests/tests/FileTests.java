@@ -37,7 +37,8 @@ public class FileTests extends TestBase {
             expectedDataForXlsxFile = "This is .xlsx file",
             expectedDataForCellB4XlsxFile = "This is B4 cell",
             expectedDataForPdfFile = "This repository is empty",
-            expectedDataForFileInZip = "This is txt file in zip archive with password";
+            expectedDataForFileInZip = "This is txt file in zip archive with password",
+            expectedDataOn3rdSheetForXlsAndXlsx = "Something on 3rd sheet";
 
     @Test
     void txtFileTest() throws FileNotFoundException {
@@ -77,6 +78,7 @@ public class FileTests extends TestBase {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
         assertThat(readXlsFromFile(xlsFile)).contains(expectedDataForXlsFile);
+        assertThat(readXlsFromFile(xlsFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
     }
 
     @Test
@@ -84,6 +86,7 @@ public class FileTests extends TestBase {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
         assertThat(getXlsFromFile(xlsFile), XLS.containsText(expectedDataForXlsFile));
+        assertThat(getXlsFromFile(xlsFile), XLS.containsText(expectedDataOn3rdSheetForXlsAndXlsx));
     }
 
     @Test
