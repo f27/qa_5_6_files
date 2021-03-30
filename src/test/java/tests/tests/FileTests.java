@@ -113,7 +113,6 @@ public class FileTests extends TestBase {
     void pdfFileWithPdfboxTest() throws IOException {
         File pdfFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(pdfFileName).downloadFile();
         String pdfText = readPdfFileWithPdfbox(pdfFile);
-        System.out.println(pdfText);
 
         assertThat(pdfText).contains(expectedDataForPdfFile);
     }
