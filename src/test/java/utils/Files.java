@@ -121,7 +121,6 @@ public class Files {
         return sb.toString();
     }
 
-
     public static String readCellXlsxFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
         return readCellFromXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
     }
