@@ -139,8 +139,8 @@ public class FileTests extends TestBase {
     void zipFileTest() throws FileNotFoundException, ZipException {
         String uuid = UUID.randomUUID().toString();
         File zipFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(zipFileName).downloadFile();
-        unzip(zipFile.getAbsolutePath(),"build/unzipped/"+ uuid, zipFilePassword);
+        unzip(zipFile.getAbsolutePath(), "build/unzipped/" + uuid, zipFilePassword);
 
-        assertThat(readTextFromFilePath("build/unzipped/"+uuid+"/zipped.txt")).contains(expectedDataForFileInZip);
+        assertThat(readTextFromFilePath("build/unzipped/" + uuid + "/zipped.txt")).contains(expectedDataForFileInZip);
     }
 }
