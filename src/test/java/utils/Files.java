@@ -100,9 +100,9 @@ public class Files {
                                 sb.append("{").append(cell.getCellFormula()).append(cell.getNumericCellValue()).append("}");
 
                                 break;
-                             default:
-                                 sb.append(cell.toString());
-                                 break;
+                            default:
+                                sb.append(cell.toString());
+                                break;
                         }
                         sb.append(" ");
                     }
