@@ -111,7 +111,6 @@ public class FileTests extends TestBase {
     void cellXlsxFilesTest() throws FileNotFoundException {
         File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
 
-        System.out.println(readXlsxFromFile(xlsxFile));
         assertThat(readXlsxFromFile(xlsxFile)).contains(expectedDataForXlsxFile);
     }
 
