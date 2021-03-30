@@ -1,5 +1,6 @@
 package tests.tests;
 
+import com.codeborne.xlstest.XLS;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 import tests.pages.RepoWithFilesPage;
@@ -9,6 +10,7 @@ import java.io.FileNotFoundException;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static utils.Files.*;
 
 public class FileTests extends TestBase {
@@ -17,9 +19,15 @@ public class FileTests extends TestBase {
             txtFileName = "1.txt",
             docFileName = "1.doc",
             docxFileName = "1.docx",
+            xlsFileName = "1.xls",
+            xlsxFileName = "1.xlsx",
             expectedDataForTxtFile = "Just text file",
             expectedDataForDocFile = "This is .doc file",
-            expectedDataForDocxFile = "This is .docx file";
+            expectedDataForDocxFile = "This is .docx file",
+            expectedDataForXlsFile = "This is .xls file",
+            expectedDataForCellB4XlsFile = "This is B4 cell",
+            expectedDataForXlsxFile = "This is .xlsx file",
+            expectedDataForCellB4XlsxFile = "This is B4 cell";
 
     @Test
     void txtFileTest() throws FileNotFoundException {
@@ -45,5 +53,33 @@ public class FileTests extends TestBase {
 
         assertThat(actualData).contains(expectedDataForDocxFile);
 
+    }
+
+    @Test
+    void xlsFileTest() throws FileNotFoundException {
+        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+
+        assertThat(getXlsFromFile(xlsFile), XLS.containsText(expectedDataForXlsFile));
+    }
+
+    @Test
+    void cellXlsFileTest() throws FileNotFoundException {
+        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+
+        assertThat(readCellTextFromXlsFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
+    }
+
+    @Test
+    void xlsxFilesTest() throws FileNotFoundException {
+        File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
+
+        assertThat(readXlsxFromFile(xlsxFile)).contains(expectedDataForXlsxFile);
+    }
+
+    @Test
+    void cellXlsxFileFromPathTest() {
+        assertThat(readCellXlsxFromPath("src/main/resources/files/2.xlsx", 0, 5, 0))
+                .contains("123+321")
+                .contains("444");
     }
 }
