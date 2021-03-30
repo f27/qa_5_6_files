@@ -47,7 +47,7 @@ public class Files {
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             XWPFDocument document = new XWPFDocument(fis);
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-            result += extractor.getText();
+            result = extractor.getText();
         } catch (Exception exep) {
             exep.printStackTrace();
         }
