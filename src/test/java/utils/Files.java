@@ -90,6 +90,7 @@ public class Files {
             XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(file));
 
             for (Sheet sheet : myExcelBook) {
+                sb.append("Sheet ").append(sheet.getSheetName()).append(":\n");
                 for (Row row : sheet) {
                     for (Cell cell : row) {
                         CellType cellType = cell.getCellType();
@@ -197,6 +198,7 @@ public class Files {
             Workbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
 
             for (Sheet sheet : myExcelBook) {
+                sb.append("Sheet ").append(sheet.getSheetName()).append(":\n");
                 for (Row row : sheet) {
                     for (Cell cell : row) {
                         CellType cellType = cell.getCellType();
@@ -221,6 +223,7 @@ public class Files {
                     }
                     sb.append("\n");
                 }
+                sb.append("\nNew sheet ----");
             }
             myExcelBook.close();
         } catch (IOException e) {
