@@ -66,6 +66,20 @@ public class FileTests extends TestBase {
     }
 
     @Test
+    void xlsWithXlsTestFileTest() throws FileNotFoundException {
+        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+
+        assertThat(getXlsFromFile(xlsFile), XLS.containsText(expectedDataForXlsFile));
+    }
+
+    @Test
+    void xlsWithXlsApacheTest() throws FileNotFoundException {
+        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+
+        assertThat(readXlsFromFile(xlsFile)).contains(expectedDataForXlsFile);
+    }
+
+    @Test
     void xlsFileTest() throws FileNotFoundException {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
@@ -73,10 +87,17 @@ public class FileTests extends TestBase {
     }
 
     @Test
-    void cellXlsFileTest() throws FileNotFoundException {
+    void cellXlsWithXlsTestFileTest() throws FileNotFoundException {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
-        assertThat(readCellTextFromXlsFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
+        assertThat(readCellTextFromXlsWithXlsTestFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
+    }
+
+    @Test
+    void cellXlsWithApacheFileTest() throws FileNotFoundException {
+        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+
+        assertThat(readCellFromXlsWithApacheFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
     }
 
     @Test
