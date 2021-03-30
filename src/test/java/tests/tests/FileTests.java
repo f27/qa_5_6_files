@@ -101,7 +101,7 @@ public class FileTests extends TestBase {
     }
 
     @Test
-    void pdfFileTest() throws IOException {
+    void pdfFileWithPdfTestTest() throws IOException {
         File pdfFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(pdfFileName).downloadFile();
         PDF pdf = new PDF(pdfFile);
 
