@@ -2,6 +2,8 @@ package utils;
 
 import com.codeborne.xlstest.XLS;
 import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -149,6 +151,19 @@ public class Files {
                     break;
             }
             myExcelBook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static String readPdfFileWithPdfbox(File file) {
+        String result = "";
+        try {
+            PDDocument document = PDDocument.load(file);
+            PDFTextStripper stripper = new PDFTextStripper();
+            result = stripper.getText(document);
+            document.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

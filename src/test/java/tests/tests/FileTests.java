@@ -110,6 +110,14 @@ public class FileTests extends TestBase {
     }
 
     @Test
+    void pdfFileWithPdfboxTest() throws IOException {
+        File pdfFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(pdfFileName).downloadFile();
+        String pdfText = readPdfFileWithPdfbox(pdfFile);
+        System.out.println(pdfText);
+        assertThat(pdfText).contains(expectedDataForPdfFile);
+    }
+
+    @Test
     void zipFileTest() throws FileNotFoundException, ZipException {
         String uuid = UUID.randomUUID().toString();
         File zipFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(zipFileName).downloadFile();
