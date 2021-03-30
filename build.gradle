@@ -6,14 +6,14 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "5.19.0",
+def selenideVersion = "5.20.1",
     pdfTestVersion = "1.6.1",
     xlsTestVersion = "1.4.3",
     poiExamplesVersion = "5.0.0",
     zip4jVersion = "2.7.0",
     assertjVersion = "3.19.0",
     junitVersion = "5.7.1",
-    slf4jVersion = "1.7.29"
+    slf4jVersion = "1.7.30"
 
 dependencies {
     testImplementation(
