@@ -66,18 +66,25 @@ public class FileTests extends TestBase {
     void cellXlsFileTest() throws FileNotFoundException {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
-        assertThat(readCellTextFromXlsFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
+        assertThat(readCellTextFromXlsFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsxFile);
     }
 
     @Test
     void xlsxFilesTest() throws FileNotFoundException {
         File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
 
+        assertThat(readCellFromXlsxFile(xlsxFile, 0, 3, 1)).contains(expectedDataForXlsxFile);
+    }
+
+    @Test
+    void cellXlsxFilesTest() throws FileNotFoundException {
+        File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
+
         assertThat(readXlsxFromFile(xlsxFile)).contains(expectedDataForXlsxFile);
     }
 
     @Test
-    void cellXlsxFileFromPathTest() {
+    void cellWithFormulaXlsxFileFromPathTest() {
         assertThat(readCellXlsxFromPath("src/main/resources/files/2.xlsx", 0, 5, 0))
                 .contains("123+321")
                 .contains("444");

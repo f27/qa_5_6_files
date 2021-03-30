@@ -118,10 +118,10 @@ public class Files {
     }
 
     public static String readCellXlsxFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
-        return readFromCellXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
+        return readCellFromXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
     }
 
-    public static String readFromCellXlsxFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
+    public static String readCellFromXlsxFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         String result = "";
         try {
             XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(file.getAbsolutePath()));
