@@ -32,6 +32,7 @@ public class Files {
     }
 
     public static String readTextFromFilePath(String path) {
+
         return readTextFromFile(getFile(path));
     }
 
@@ -50,6 +51,7 @@ public class Files {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
@@ -124,6 +126,7 @@ public class Files {
     }
 
     public static String readCellXlsxFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
+
         return readCellFromXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
     }
 
@@ -154,6 +157,7 @@ public class Files {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
@@ -167,6 +171,7 @@ public class Files {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 }
