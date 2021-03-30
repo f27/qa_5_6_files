@@ -75,45 +75,45 @@ public class FileTests extends TestBase {
     }
 
     @Test
-    void xlsWithXlsApacheTest() throws FileNotFoundException {
+    void xlsWithApacheTest() throws FileNotFoundException {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
-        assertThat(readXlsOrXlsxFromFile(xlsFile)).contains(expectedDataForXlsFile);
-        assertThat(readXlsOrXlsxFromFile(xlsFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
+        assertThat(readSSFromFile(xlsFile)).contains(expectedDataForXlsFile);
+        assertThat(readSSFromFile(xlsFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
     }
 
     @Test
     void cellXlsWithXlsTestFileTest() throws FileNotFoundException {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
-        assertThat(readCellTextFromXlsWithXlsTestFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
+        assertThat(readCellTextFromSSWithXlsTestFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
     }
 
     @Test
     void cellXlsWithApacheFileTest() throws FileNotFoundException {
         File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
 
-        assertThat(readCellFromXlsOrXlsxFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
+        assertThat(readCellFromSSFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
     }
 
     @Test
     void cellXlsxFilesTest() throws FileNotFoundException {
         File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
 
-        assertThat(readCellFromXlsOrXlsxFile(xlsxFile, 0, 3, 1)).contains(expectedDataForCellB4XlsxFile);
+        assertThat(readCellFromSSFile(xlsxFile, 0, 3, 1)).contains(expectedDataForCellB4XlsxFile);
     }
 
     @Test
     void xlsxFilesTest() throws FileNotFoundException {
         File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
 
-        assertThat(readXlsOrXlsxFromFile(xlsxFile)).contains(expectedDataForXlsxFile);
-        assertThat(readXlsOrXlsxFromFile(xlsxFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
+        assertThat(readSSFromFile(xlsxFile)).contains(expectedDataForXlsxFile);
+        assertThat(readSSFromFile(xlsxFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
     }
 
     @Test
     void cellWithFormulaXlsxFileFromPathTest() {
-        assertThat(readCellXlsxOrXlsFromPath("src/main/resources/files/2.xlsx", 0, 5, 0))
+        assertThat(readCellSSFromPath("src/main/resources/files/2.xlsx", 0, 5, 0))
                 .contains("123+321")
                 .contains("444");
     }

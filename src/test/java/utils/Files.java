@@ -71,17 +71,13 @@ public class Files {
         return new XLS(file);
     }
 
-    public static String readCellTextFromXlsWithXlsTestFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
+    public static String readCellTextFromSSWithXlsTestFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         XLS xls = getXlsFromFile(file);
 
         return xls.excel.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex).toString();
     }
 
-    public static String readXlsxFromPath(String path) {
-        return readXlsOrXlsxFromFile(getFile(path));
-    }
-
-    public static String readXlsOrXlsxFromFile(File file) {
+    public static String readSSFromFile(File file) {
         StringBuilder sb = new StringBuilder();
 
         try {
@@ -122,12 +118,12 @@ public class Files {
         return sb.toString();
     }
 
-    public static String readCellXlsxOrXlsFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
+    public static String readCellSSFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
 
-        return readCellFromXlsOrXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
+        return readCellFromSSFile(getFile(path), sheetIndex, rowIndex, cellIndex);
     }
 
-    public static String readCellFromXlsOrXlsxFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
+    public static String readCellFromSSFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         String result = "";
         try {
             Workbook myExcelBook = WorkbookFactory.create(new FileInputStream(file));
