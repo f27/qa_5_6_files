@@ -4,11 +4,9 @@ import com.codeborne.xlstest.XLS;
 import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
@@ -80,14 +78,14 @@ public class Files {
     }
 
     public static String readXlsxFromPath(String path) {
-        return readXlsxFromFile(getFile(path));
+        return readXlsOrXlsxFromFile(getFile(path));
     }
 
-    public static String readXlsxFromFile(File file) {
+    public static String readXlsOrXlsxFromFile(File file) {
         StringBuilder sb = new StringBuilder();
 
         try {
-            XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(file));
+            Workbook myExcelBook = WorkbookFactory.create(new FileInputStream(file));
 
             for (Sheet sheet : myExcelBook) {
                 sb.append("Sheet ").append(sheet.getSheetName()).append(":\n");
@@ -124,15 +122,15 @@ public class Files {
         return sb.toString();
     }
 
-    public static String readCellXlsxFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
+    public static String readCellXlsxOrXlsFromPath(String path, int sheetIndex, int rowIndex, int cellIndex) {
 
-        return readCellFromXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
+        return readCellFromXlsOrXlsxFile(getFile(path), sheetIndex, rowIndex, cellIndex);
     }
 
-    public static String readCellFromXlsxFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
+    public static String readCellFromXlsOrXlsxFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         String result = "";
         try {
-            Workbook myExcelBook = new XSSFWorkbook(new FileInputStream(file));
+            Workbook myExcelBook = WorkbookFactory.create(new FileInputStream(file));
             Cell cell = myExcelBook.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex);
             CellType cellType = cell.getCellType();
             switch (cellType) {
@@ -158,78 +156,6 @@ public class Files {
         }
 
         return result;
-    }
-
-    public static String readCellFromXlsWithApacheFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
-        String result = "";
-        try {
-            Workbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
-            Cell cell = myExcelBook.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex);
-            CellType cellType = cell.getCellType();
-            switch (cellType) {
-                case STRING:
-                    result = cell.getStringCellValue();
-                    break;
-
-                case NUMERIC:
-                    result = "[" + cell.getNumericCellValue() + "]";
-                    break;
-
-                case FORMULA:
-                    result = "{" + cell.getCellFormula() + cell.getNumericCellValue() + "}";
-
-                    break;
-                default:
-                    result = cell.toString();
-                    break;
-            }
-            myExcelBook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public static String readXlsFromFile(File file) {
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            Workbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
-
-            for (Sheet sheet : myExcelBook) {
-                sb.append("Sheet ").append(sheet.getSheetName()).append(":\n");
-                for (Row row : sheet) {
-                    for (Cell cell : row) {
-                        CellType cellType = cell.getCellType();
-                        switch (cellType) {
-                            case STRING:
-                                sb.append(cell.getStringCellValue());
-                                break;
-
-                            case NUMERIC:
-                                sb.append("[").append(cell.getNumericCellValue()).append("]");
-                                break;
-
-                            case FORMULA:
-                                sb.append("{").append(cell.getCellFormula()).append(cell.getNumericCellValue()).append("}");
-
-                                break;
-                            default:
-                                sb.append(cell.toString());
-                                break;
-                        }
-                        sb.append(" ");
-                    }
-                    sb.append("\n");
-                }
-            }
-            myExcelBook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return sb.toString();
     }
 
     public static String readPdfFileWithPdfbox(File file) {
