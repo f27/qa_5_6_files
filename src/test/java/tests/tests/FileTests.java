@@ -48,7 +48,9 @@ public class FileTests extends TestBase {
 
     private File download(String fileName) throws FileNotFoundException {
 
-        return open(this.repoWithFiles, RepoWithFilesPage.class).gotoFile(fileName).downloadFile();
+        return open(this.repoWithFiles, RepoWithFilesPage.class)
+                .gotoFile(fileName)
+                .downloadFile();
     }
 
     @Test
