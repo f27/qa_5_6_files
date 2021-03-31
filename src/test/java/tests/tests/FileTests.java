@@ -20,7 +20,7 @@ import static utils.Zip.unzip;
 
 public class FileTests extends TestBase {
     String
-            repoWithFiles = "/f27/qa_5_6_files/tree/master/src/main/resources/files",
+            repoWithFiles = "/f27/qa_5_6_files/tree/master/src/test/resources/files",
             txtFileName = "1.txt",
             docFileName = "1.doc",
             docxFileName = "1.docx",
@@ -113,7 +113,7 @@ public class FileTests extends TestBase {
 
     @Test
     void cellWithFormulaXlsxFileFromPathTest() {
-        assertThat(readCellSSFromPath("src/main/resources/files/2.xlsx", 0, 5, 0))
+        assertThat(readCellSSFromPath("./src/test/resources/files/2.xlsx", 0, 5, 0))
                 .contains("123+321")
                 .contains("444");
     }
