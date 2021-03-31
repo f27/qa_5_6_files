@@ -39,7 +39,7 @@ public class Files {
     public static String readTextFromDocFile(File file) {
         String result = "";
         try {
-            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            FileInputStream fis = new FileInputStream(file);
             HWPFDocument document = new HWPFDocument(fis);
             WordExtractor extractor = new WordExtractor(document);
             result = extractor.getText();
@@ -54,7 +54,7 @@ public class Files {
     public static String readTextFromDocxFile(File file) {
         String result = "";
         try {
-            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            FileInputStream fis = new FileInputStream(file);
             XWPFDocument document = new XWPFDocument(fis);
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             result = extractor.getText();
