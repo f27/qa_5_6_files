@@ -4,15 +4,16 @@ import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
 import net.lingala.zip4j.exception.ZipException;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import tests.TestBase;
 import tests.pages.RepoWithFilesPage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.UUID;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static utils.Files.*;
@@ -40,9 +41,19 @@ public class FileTests extends TestBase {
             expectedDataForFileInZip = "This is txt file in zip archive with password",
             expectedDataOn3rdSheetForXlsAndXlsx = "Something on 3rd sheet";
 
+    public static String getSessionId() {
+
+        return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
+    }
+
+    private File download(String fileName) throws FileNotFoundException {
+
+        return open(this.repoWithFiles, RepoWithFilesPage.class).gotoFile(fileName).downloadFile();
+    }
+
     @Test
     void txtFileTest() throws FileNotFoundException {
-        File txtFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(txtFileName).downloadFile();
+        File txtFile = download(txtFileName);
         String actualData = readTextFromFile(txtFile);
 
         assertThat(actualData).isEqualTo(expectedDataForTxtFile);
@@ -50,7 +61,7 @@ public class FileTests extends TestBase {
 
     @Test
     void docFileTest() throws FileNotFoundException {
-        File docFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(docFileName).downloadFile();
+        File docFile = download(docFileName);
         String actualData = readTextFromDocFile(docFile);
 
         assertThat(actualData).contains(expectedDataForDocFile);
@@ -59,7 +70,7 @@ public class FileTests extends TestBase {
 
     @Test
     void docxFileTest() throws FileNotFoundException {
-        File docxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(docxFileName).downloadFile();
+        File docxFile = download(docxFileName);
         String actualData = readTextFromDocxFile(docxFile);
 
         assertThat(actualData).contains(expectedDataForDocxFile);
@@ -68,7 +79,7 @@ public class FileTests extends TestBase {
 
     @Test
     void xlsWithXlsTestFileTest() throws FileNotFoundException {
-        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+        File xlsFile = download(xlsFileName);
 
         assertThat(getXlsFromFile(xlsFile), XLS.containsText(expectedDataForXlsFile));
         assertThat(getXlsFromFile(xlsFile), XLS.containsText(expectedDataOn3rdSheetForXlsAndXlsx));
@@ -76,7 +87,7 @@ public class FileTests extends TestBase {
 
     @Test
     void xlsWithApacheTest() throws FileNotFoundException {
-        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+        File xlsFile = download(xlsFileName);
 
         assertThat(readSSFromFile(xlsFile)).contains(expectedDataForXlsFile);
         assertThat(readSSFromFile(xlsFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
@@ -84,28 +95,28 @@ public class FileTests extends TestBase {
 
     @Test
     void cellXlsWithXlsTestFileTest() throws FileNotFoundException {
-        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+        File xlsFile = download(xlsFileName);
 
         assertThat(readCellTextFromSSWithXlsTestFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
     }
 
     @Test
     void cellXlsWithApacheFileTest() throws FileNotFoundException {
-        File xlsFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsFileName).downloadFile();
+        File xlsFile = download(xlsFileName);
 
         assertThat(readCellFromSSFile(xlsFile, 0, 3, 1)).contains(expectedDataForCellB4XlsFile);
     }
 
     @Test
     void cellXlsxFilesTest() throws FileNotFoundException {
-        File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
+        File xlsxFile = download(xlsxFileName);
 
         assertThat(readCellFromSSFile(xlsxFile, 0, 3, 1)).contains(expectedDataForCellB4XlsxFile);
     }
 
     @Test
     void xlsxFilesTest() throws FileNotFoundException {
-        File xlsxFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(xlsxFileName).downloadFile();
+        File xlsxFile = download(xlsxFileName);
 
         assertThat(readSSFromFile(xlsxFile)).contains(expectedDataForXlsxFile);
         assertThat(readSSFromFile(xlsxFile)).contains(expectedDataOn3rdSheetForXlsAndXlsx);
@@ -120,7 +131,7 @@ public class FileTests extends TestBase {
 
     @Test
     void pdfFileWithPdfTestTest() throws IOException {
-        File pdfFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(pdfFileName).downloadFile();
+        File pdfFile = download(pdfFileName);
         PDF pdf = new PDF(pdfFile);
 
         assertThat(pdf, PDF.containsText(expectedDataForPdfFile));
@@ -129,7 +140,7 @@ public class FileTests extends TestBase {
 
     @Test
     void pdfFileWithPdfboxTest() throws IOException {
-        File pdfFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(pdfFileName).downloadFile();
+        File pdfFile = download(pdfFileName);
         String pdfText = readPdfFileWithPdfbox(pdfFile);
 
         assertThat(pdfText).contains(expectedDataForPdfFile);
@@ -137,10 +148,9 @@ public class FileTests extends TestBase {
 
     @Test
     void zipFileTest() throws FileNotFoundException, ZipException {
-        String uuid = UUID.randomUUID().toString();
-        File zipFile = open(repoWithFiles, RepoWithFilesPage.class).gotoFile(zipFileName).downloadFile();
-        unzip(zipFile.getAbsolutePath(), "build/unzipped/" + uuid, zipFilePassword);
+        File zipFile = download(zipFileName);
+        unzip(zipFile.getAbsolutePath(), "build/unzipped/" + getSessionId(), zipFilePassword);
 
-        assertThat(readTextFromFilePath("build/unzipped/" + uuid + "/zipped.txt")).contains(expectedDataForFileInZip);
+        assertThat(readTextFromFilePath("build/unzipped/" + getSessionId() + "/zipped.txt")).contains(expectedDataForFileInZip);
     }
 }
