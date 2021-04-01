@@ -153,7 +153,7 @@ public class Files {
 
     public static String readPdfFileWithPdfbox(File file) {
         String result = "";
-        try(PDDocument document = PDDocument.load(file)) {
+        try (PDDocument document = PDDocument.load(file)) {
             PDFTextStripper stripper = new PDFTextStripper();
             result = stripper.getText(document);
         } catch (IOException e) {
