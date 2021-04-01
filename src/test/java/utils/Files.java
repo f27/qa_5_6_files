@@ -38,12 +38,10 @@ public class Files {
 
     public static String readTextFromDocFile(File file) {
         String result = "";
-        try {
-            FileInputStream fis = new FileInputStream(file);
+        try(FileInputStream fis = new FileInputStream(file)) {
             HWPFDocument document = new HWPFDocument(fis);
             WordExtractor extractor = new WordExtractor(document);
             result = extractor.getText();
-            fis.close();
             extractor.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,8 +78,7 @@ public class Files {
     public static String readSSFromFile(File file) {
         StringBuilder sb = new StringBuilder();
 
-        try {
-            FileInputStream fis = new FileInputStream(file);
+        try(FileInputStream fis = new FileInputStream(file)) {
             Workbook myExcelBook = WorkbookFactory.create(fis);
 
             for (Sheet sheet : myExcelBook) {
@@ -111,7 +108,6 @@ public class Files {
                     sb.append("\n");
                 }
             }
-            fis.close();
             myExcelBook.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,8 +123,7 @@ public class Files {
 
     public static String readCellFromSSFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         String result = "";
-        try {
-            FileInputStream fis = new FileInputStream(file);
+        try(FileInputStream fis = new FileInputStream(file)) {
             Workbook myExcelBook = WorkbookFactory.create(fis);
             Cell cell = myExcelBook.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex);
             CellType cellType = cell.getCellType();
@@ -149,7 +144,6 @@ public class Files {
                     result = cell.toString();
                     break;
             }
-            fis.close();
             myExcelBook.close();
         } catch (IOException e) {
             e.printStackTrace();
