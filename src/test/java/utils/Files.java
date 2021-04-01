@@ -38,11 +38,11 @@ public class Files {
 
     public static String readTextFromDocFile(File file) {
         String result = "";
-        try(FileInputStream fis = new FileInputStream(file)) {
-            HWPFDocument document = new HWPFDocument(fis);
-            WordExtractor extractor = new WordExtractor(document);
+        try (FileInputStream fis = new FileInputStream(file);
+             HWPFDocument document = new HWPFDocument(fis);
+             WordExtractor extractor = new WordExtractor(document)) {
+
             result = extractor.getText();
-            extractor.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,11 +52,11 @@ public class Files {
 
     public static String readTextFromDocxFile(File file) {
         String result = "";
-        try(FileInputStream fis = new FileInputStream(file)) {
-            XWPFDocument document = new XWPFDocument(fis);
-            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
+        try (FileInputStream fis = new FileInputStream(file);
+             XWPFDocument document = new XWPFDocument(fis);
+             XWPFWordExtractor extractor = new XWPFWordExtractor(document)) {
+
             result = extractor.getText();
-            extractor.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,8 +78,8 @@ public class Files {
     public static String readSSFromFile(File file) {
         StringBuilder sb = new StringBuilder();
 
-        try(FileInputStream fis = new FileInputStream(file)) {
-            Workbook myExcelBook = WorkbookFactory.create(fis);
+        try (FileInputStream fis = new FileInputStream(file);
+             Workbook myExcelBook = WorkbookFactory.create(fis)) {
 
             for (Sheet sheet : myExcelBook) {
                 sb.append("Sheet ").append(sheet.getSheetName()).append(":\n");
@@ -108,7 +108,6 @@ public class Files {
                     sb.append("\n");
                 }
             }
-            myExcelBook.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,8 +122,9 @@ public class Files {
 
     public static String readCellFromSSFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         String result = "";
-        try(FileInputStream fis = new FileInputStream(file)) {
-            Workbook myExcelBook = WorkbookFactory.create(fis);
+        try (FileInputStream fis = new FileInputStream(file);
+             Workbook myExcelBook = WorkbookFactory.create(fis)) {
+
             Cell cell = myExcelBook.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex);
             CellType cellType = cell.getCellType();
             switch (cellType) {
@@ -144,7 +144,6 @@ public class Files {
                     result = cell.toString();
                     break;
             }
-            myExcelBook.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -154,11 +153,9 @@ public class Files {
 
     public static String readPdfFileWithPdfbox(File file) {
         String result = "";
-        try {
-            PDDocument document = PDDocument.load(file);
+        try(PDDocument document = PDDocument.load(file)) {
             PDFTextStripper stripper = new PDFTextStripper();
             result = stripper.getText(document);
-            document.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
