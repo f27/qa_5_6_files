@@ -54,12 +54,10 @@ public class Files {
 
     public static String readTextFromDocxFile(File file) {
         String result = "";
-        try {
-            FileInputStream fis = new FileInputStream(file);
+        try(FileInputStream fis = new FileInputStream(file)) {
             XWPFDocument document = new XWPFDocument(fis);
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             result = extractor.getText();
-            fis.close();
             extractor.close();
         } catch (Exception e) {
             e.printStackTrace();
