@@ -43,6 +43,7 @@ public class Files {
             HWPFDocument document = new HWPFDocument(fis);
             WordExtractor extractor = new WordExtractor(document);
             result = extractor.getText();
+            fis.close();
             extractor.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,6 +59,7 @@ public class Files {
             XWPFDocument document = new XWPFDocument(fis);
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             result = extractor.getText();
+            fis.close();
             extractor.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +83,8 @@ public class Files {
         StringBuilder sb = new StringBuilder();
 
         try {
-            Workbook myExcelBook = WorkbookFactory.create(new FileInputStream(file));
+            FileInputStream fis = new FileInputStream(file);
+            Workbook myExcelBook = WorkbookFactory.create(fis);
 
             for (Sheet sheet : myExcelBook) {
                 sb.append("Sheet ").append(sheet.getSheetName()).append(":\n");
@@ -110,6 +113,7 @@ public class Files {
                     sb.append("\n");
                 }
             }
+            fis.close();
             myExcelBook.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +130,8 @@ public class Files {
     public static String readCellFromSSFile(File file, int sheetIndex, int rowIndex, int cellIndex) {
         String result = "";
         try {
-            Workbook myExcelBook = WorkbookFactory.create(new FileInputStream(file));
+            FileInputStream fis = new FileInputStream(file);
+            Workbook myExcelBook = WorkbookFactory.create(fis);
             Cell cell = myExcelBook.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex);
             CellType cellType = cell.getCellType();
             switch (cellType) {
@@ -146,6 +151,7 @@ public class Files {
                     result = cell.toString();
                     break;
             }
+            fis.close();
             myExcelBook.close();
         } catch (IOException e) {
             e.printStackTrace();
