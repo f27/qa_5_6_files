@@ -41,7 +41,7 @@ public class FileTests extends TestBase {
             expectedDataForFileInZip = "This is txt file in zip archive with password",
             expectedDataOn3rdSheetForXlsAndXlsx = "Something on 3rd sheet";
 
-    public static String getSessionId() {
+    private String getSessionId() {
 
         return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
     }
